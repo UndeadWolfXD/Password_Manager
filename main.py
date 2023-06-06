@@ -1,7 +1,14 @@
 import os;
 import pandas as pd;
+import platform;
+def clear():
+    if(platform.system()=="Linux"):
+        os.system("clear");
+    elif(platform.system()=="Windows"):
+        os.system("cls");
+    else:
+        print("Error: platform not recognized. useage of this program is not recomended");
 
-os.system("clear");
 
 running=True;
 
@@ -18,11 +25,11 @@ def listall():
     os.system("ls passwd/");
 
 def append(filename):
-    os.system("clear");
+    clear();
     arr=["app", "name", "passwd"];
     appending=True;
     while(appending):
-        os.system("clear")
+        clear();
         arr[0]=input("enter application or site name\nappending>");
         arr[1]=input("enter user name\nappending>");
         arr[2]=input("enter password\nappending>");
@@ -33,15 +40,15 @@ def append(filename):
         if(opt=="y"):
             with open(filename, 'a') as file:
                 file.write(arr[0]+","+arr[1]+","+arr[2]+"\n");
-            os.system("clear");
+            clear();
             appending=False;
         elif(opt=="n"):
             opt=input("would you like to enter the credentials again? [Y/n]\nappending>").lower();
             if(opt=="y"):
-                os.system("clear");
+                clear();
             elif(opt=="n"):
                 appending=False;
-                os.system("clear");
+                clear();
             else:
                 print("invalid choice\nreturning");
         else:
@@ -49,7 +56,7 @@ def append(filename):
     return filename;
 
 def remove(filename):
-    os.system("clear");
+    clear();
     rmentry=input("enter  website/application name to remove entry\nremoving>");
     df=pd.read_csv(filename);
     df.drop(df[df["website/application"]==rmentry].index, inplace=True);
@@ -58,7 +65,7 @@ def remove(filename):
     input();
 
 def search(filename):
-    os.system("clear");
+    clear();
     locate=input("enter the website/application name\nsearching>");
     df=pd.read_csv(filename);
     df=df.loc[df["website/application"]==locate];
@@ -66,20 +73,20 @@ def search(filename):
     input();
 
 def displayall(filename):
-    os.system("clear")
+    clear()
     df=pd.read_csv(filename);
     print(df);
     input();
 
 def openfile():
-    os.system("clear");
+    clear();
     filename=input("please enter the file name\nopening>");
     filename="passwd/"+filename+".csv";
     if(os.path.isfile(filename+".gpg")):
         os.system("gpg -d --output "+filename+" --no-symkey-cache "+filename+".gpg");
         fileopen=True;
         while(fileopen):
-            os.system("clear")
+            clear()
             print(
                 "add - appends new password to list\n",
                 "list - display all passwords in the list\n",
@@ -102,19 +109,25 @@ def openfile():
     else:
         print("file not found")
 
-while(running):
-    os.system("clear");
-    print(
+print(
         "welcome to my password manager\n",
-        "\tDisclaimer!\n",
-        "\tdo not use this program for legitimate use!\n",
-        "\ti do not know anything about storing passwords safely and there may be majour security holes in this program\n",
-        "type \"man\" for the manual"
+        "\tWarning!\n",
+        "\tDo not use this program for legitimate use!\n",
+        "\tI do not know anything about storing passwords safely and there may be majour security holes in this program\n",
+        "\tpress enter to continue"
         );
+input(">")
+while(running):
+    clear();
+    print(
+            "new - creates new password file\n",
+            "list - displays all password files\n",
+            "open - opens the file so new password entries can be added\n",
+            );
     opt=input("main menu>").lower();
     if(opt=="quit"or opt=="q"):
         running=False;
-        os.system("clear");
+        clear();
     elif(opt=="new"):
         new();
     elif(opt=="list"):
